@@ -1,0 +1,34 @@
+{
+  "rules": {
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid || root.child('users').child(auth.uid).child('userType').val() === 'monitor' || root.child('users').child(auth.uid).child('userType').val() === 'police'",
+        ".write": "$uid === auth.uid"
+      }
+    },
+    "emergency_queue": {
+      ".read": "root.child('users').child(auth.uid).child('userType').val() === 'monitor'",
+      "$victimId": {
+        ".write": "$victimId === auth.uid || root.child('users').child(auth.uid).child('userType').val() === 'monitor'"
+      }
+    },
+    "available_units": {
+      ".read": "root.child('users').child(auth.uid).child('userType').val() === 'monitor' || root.child('users').child(auth.uid).child('userType').val() === 'police'",
+      "$policeId": {
+        ".write": "$policeId === auth.uid"
+      }
+    },
+    "assignments": {
+      "$policeId": {
+        ".read": "$policeId === auth.uid || root.child('users').child(auth.uid).child('userType').val() === 'monitor'",
+        ".write": "root.child('users').child(auth.uid).child('userType').val() === 'monitor' || $policeId === auth.uid"
+      }
+    },
+    "history_logs": {
+      ".read": "root.child('users').child(auth.uid).child('userType').val() === 'monitor'",
+      "$logId": {
+        ".write": "root.child('users').child(auth.uid).child('userType').val() === 'monitor' || root.child('users').child(auth.uid).child('userType').val() === 'police'"
+      }
+    }
+  }
+}
